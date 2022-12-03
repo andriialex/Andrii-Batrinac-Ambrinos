@@ -1,0 +1,26 @@
+{
+  "name": "andrii-batrinac-ambrinos",
+  "version": "1.0.0",
+  "description": "Proiect 6 - Aplicație web acordarea de feedback continuu",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andriialex/Andrii-Batrinac-Ambrinos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andriialex/Andrii-Batrinac-Ambrinos/issues"
+  },
+  "homepage": "https://github.com/andriialex/Andrii-Batrinac-Ambrinos#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.5"
+  }
+}
