@@ -26,20 +26,26 @@ export default function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
-      fetch('/api/my-endpoint', {
+      const body = {
+        "email": event.target.elements.email.value,
+        "pass": event.target.elements.password.value
+      }
+      fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          alert(data.message)
+        }).catch((error) => {
+          console.log(error)
         });
     }
     else
-      console.log('nu a mers')
+      console.log('didnt pass validation')
   }
 
   return (
@@ -67,7 +73,7 @@ export default function Register() {
             <div className="-space-y-px rounded-md shadow-sm">
               <div>
                 <input
-                  id="email-address"
+                  id="email"
                   name="email"
                   type="email"
                   autoComplete="email"

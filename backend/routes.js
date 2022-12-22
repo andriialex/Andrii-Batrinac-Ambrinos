@@ -4,6 +4,10 @@ import supabase from "./configSupabase.js";
 import bcrypt from "bcrypt";
 
 router.post("/register", async (req, res) => {
+  if (Object.keys(req.body).length < 2) {
+    res.status(400).json({ message: "Data incorrect in body" });
+    return;
+  }
   const { email, pass } = req.body;
   let { data: users, error } = await supabase
     .from("users")
@@ -11,9 +15,6 @@ router.post("/register", async (req, res) => {
     .eq("email", email);
   if (users[0]) res.status(400).json({ message: "Acest email exista deja!" });
   else {
-    // const cmp = await bcrypt.hash(pass,10, function(){
-
-    // });
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(pass, salt);
     let password = hashedPassword;
@@ -158,12 +159,12 @@ router.patch("/update-curs", async (req, res) => {
     .eq("id", idCurs)
     .select();
 
-  if (!data) res.status(400).json({ message:  "Update activitate neefectuat!"});
-  else res.status(200).json({message:"Update activitate efectuat cu succes!"});
+  if (!data) res.status(400).json({ message: "Update activitate neefectuat!" });
+  else res.status(200).json({ message: "Update activitate efectuat cu succes!" });
 });
 
-router.post("/feedback", (req, res) => {});
+router.post("/feedback", (req, res) => { });
 
-router.get("/get-feedback", (req, res) => {});
+router.get("/get-feedback", (req, res) => { });
 
 export default router;
