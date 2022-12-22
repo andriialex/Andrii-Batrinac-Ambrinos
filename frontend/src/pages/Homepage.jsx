@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Profesor from "../components/Profesor";
 
 const Homepage = () => {
   const navigate = useNavigate();
   return (
     <>
       <div>
-        <h1>HOMEPAGE</h1>
-        <profesor></profesor>
-        <student></student>
+        <Profesor/>
+        {/* <student></student> */}
       </div>
     </>
   );
