@@ -4,7 +4,7 @@ import supabase from "./configSupabase.js";
 import bcrypt from "bcrypt";
 
 router.post("/register", async (req, res) => {
-  if (Object.keys(req.body).length < 2) {
+  if (Object.keys(req.body).length != 2) {
     res.status(400).json({ message: "Data incorrect in body" });
     return;
   }
