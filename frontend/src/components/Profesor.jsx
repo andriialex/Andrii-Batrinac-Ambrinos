@@ -18,10 +18,10 @@ function Profesor() {
         setShowPopupEdit(false);
     };
 
-    const [data, setData] = useState(null);
+    var CursuriInfo;
 
     useEffect(() => {
-        async function fetchData() {
+        function fetchData() {
             fetch("http://localhost:3000/get-cursuri", {
                 method: "POST",
                 headers: {
@@ -31,20 +31,25 @@ function Profesor() {
                     "idUser": 1
                 }),
             })
-                .then((response) => response.json())
+                .then((response) => {
+                    if (response.status != 200)
+                        return;
+                    return response.json();
+                })
                 .then((data) => {
-                    alert(data.activities);
+                    // console.log(response)
+                    CursuriInfo = data;
+                    console.log(CursuriInfo)
                 })
                 .catch((error) => {
                     console.log(error);
                 });
             // const json = await response.json();
             // setData(json);
-            // console.log(this.data)
         }
 
         fetchData();
-    });
+    }, []);
 
     return (
         <>
