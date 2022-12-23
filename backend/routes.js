@@ -118,14 +118,7 @@ router.get("/login-status", async (req, res) => {
 //Get user data with authorization middleware
 router.get("/user", authorize, async (req, res) => {
   try {
-    let { data: users, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", req.user.id);
-    if (!users[0]) res.status(400).json({ message: "Nu exista user!" });
-    else {
-      res.status(200).json(users[0]);
-    }
+    res.status(200).json(req.user);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message })
   }
@@ -232,7 +225,7 @@ router.post("/creare-curs", authorize, async (req, res) => {
 });
 
 //Update an existing course for professor
-router.patch("/update-curs", async (req, res) => {
+router.patch("/update-curs", authorize, async (req, res) => {
   try {
     const { id_curs, title, description, code, date_start, date_final } = req.body;
 
@@ -272,7 +265,7 @@ router.post("/feedback", authorize, async (req, res) => {
 });
 
 //Get feedbacks for professors
-router.get("/feedback", async (req, res) => {
+router.get("/feedback", authorize, async (req, res) => {
   const { idActivity } = req.body;
   try {
     const { data } = await supabase
