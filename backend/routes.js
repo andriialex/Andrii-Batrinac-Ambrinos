@@ -64,14 +64,22 @@ router.post("/get-cursuri", async (req, res) => {
     .from("users")
     .select("listActivities")
     .eq("id", idUser);
-  if (users[0]) {
+
+  if (users.length == 0) {
+    res.status(400).json({ message: "No data for this user Id" });
+    return;
+  }
+  else {
     const list = users[0].listActivities;
     let { data: activities, error } = await supabase
       .from("activities")
       .select("*")
       .in("id", list);
-    res.send(activities);
-  } else res.status(400).json({ message: "Id user invalid" });
+    res.status(200).json({
+      message: "Fetch cursuri cu succes!",
+      activities: activities
+    });
+  }
 });
 
 router.patch("/inscriere-curs", async (req, res) => {
