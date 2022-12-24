@@ -5,6 +5,10 @@ function Profesor() {
     const [showPopup, setShowPopup] = useState(false);
     const [showPopupEdit, setShowPopupEdit] = useState(false);
 
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     const handleOpenPopupAdd = () => {
         setShowPopup(true);
     };
@@ -18,43 +22,23 @@ function Profesor() {
         setShowPopupEdit(false);
     };
 
-    var CursuriInfo;
-
     useEffect(() => {
-        async function fetchData() {
-            const response = await fetch("http://localhost:3000/cursuri");
-            if (response.status == 200) {
-                const json = await response.json();
-                CursuriInfo = json.activities;
-            }
-            else {
-                console.log(await response.json())
-            }
-            // fetch("http://localhost:3000/cursuri", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //         //de inlocuit cu id-ul user-ului logat !
-            //         "idUser": 1
-            //     }),
-            // })
-            //     .then((response) => {
-            //         response.json();
-            //     })
-            //     .then((data) => {
-            //         // console.log(response)
-            //         if (data.activities)
-            //             CursuriInfo = data.activities;
-            //         console.log(CursuriInfo)
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-        }
-
-        fetchData();
+        fetch("/api/cursuri")
+            .then(data => {
+                if (!data.ok) {
+                    throw Error('could not fetch the data');
+                }
+                return data.json();
+            })
+            .then(data => {
+                setData(data);
+                setLoading(false)
+                setError(null)
+            })
+            .catch(err => {
+                setError(err.message);
+                setLoading(false)
+            });
     }, []);
 
     return (
@@ -103,36 +87,8 @@ function Profesor() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                            <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td className="py-4 px-6">
-                                Sliver
-                            </td>
-                            <td className="py-4 px-6">
-                                Laptop
-                            </td>
-                            <td className="py-4 px-6">
-                                $2999
-                            </td>
-                            <td className="py-4 px-6">
-                                $2999
-                            </td>
-                            <td className="py-4 px-6">
-                                <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={handleOpenPopupEdit}>Edit</button>
-                            </td>
-                        </tr>
-                        {CursuriInfo === undefined &&
-                            <>
-                                <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                    <td colSpan={6}>No data found</td>
-                                </tr>
-                            </>
-                        }
-                        {CursuriInfo && CursuriInfo.map((item) => (
-                            // <div key={CursuriInfo.id}>{item.name}</div>
-                            <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                        {data?.length > 0 ? data.map((item) => (
+                            <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700" key={item.id}>
                                 <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item.title}
                                 </th>
@@ -146,10 +102,22 @@ function Profesor() {
                                     {item.date_start}
                                 </td>
                                 <td className="py-4 px-6">
+                                    {item.date_final}
+                                </td>
+                                <td className="py-4 px-6">
                                     <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={handleOpenPopupEdit}>Edit</button>
                                 </td>
                             </tr>
-                        ))}
+                        )) : <>
+                            <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                <td colSpan={6}>No data found</td>
+                            </tr>
+                        </>}
+                        {loading &&
+                            <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                <td colSpan={6}>Loading...</td>
+                            </tr>}
+                        {error && <div>{error}</div>}
                     </tbody>
                 </table>
             </div>

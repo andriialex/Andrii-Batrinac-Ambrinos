@@ -74,9 +74,7 @@ router.post("/login", async (req, res) => {
       res.cookie('token', token, {
         path: '/',
         httpOnly: true,
-        expires: new Date(Date.now() + 86400000),
-        secure: true,
-        sameSite: "none"
+        expires: new Date(Date.now() + 86400000)
       });
 
       res.status(200).json({ message: "Login efectuat cu succes!", user: users[0], token });

@@ -8,16 +8,17 @@ export default function Login() {
       pass: event.target.elements.password.value,
     };
     // console.log(JSON.stringify(body))
-    fetch("http://localhost:3000/login", {
+    fetch("/api/login", {
+      credentials: 'include',
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(data.message);
+        console.log(data)
       })
       .catch((error) => {
         console.log(error);
