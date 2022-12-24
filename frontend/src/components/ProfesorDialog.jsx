@@ -30,6 +30,80 @@ export default function ProfesorDialog(props) {
         }
     }, [props.item])
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const body = {
+            title: event.target.elements.titlu.value,
+            description: event.target.elements.descriere.value,
+            code: event.target.elements.cod.value,
+            date_start: event.target.elements.date_start.value,
+            date_final: event.target.elements.date_final.value
+        }
+        if (props.mode == 'add') {
+            fetch("/api/creare-curs", {
+                credentials: 'include',
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    alert(data.message);
+                    location.reload()
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        else if (props.mode == 'edit') {
+            var result = window.confirm("Sunteti sigur ca vreti sa modificati cursul?");
+            if (result == true) {
+                body.id_curs = id
+                fetch("/api/update-curs", {
+                    credentials: 'include',
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(body),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        alert(data.message);
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+
+        }
+        // console.log(event.target.elements.titlu.value)
+        // if (validate()) {
+        //     const body = {
+        //         email: event.target.elements.email.value,
+        //         pass: event.target.elements.password.value,
+        //     };
+        //     fetch("/api/register", {
+        //         credentials: 'include',
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify(body),
+        //     })
+        //         .then((response) => response.json())
+        //         .then((data) => {
+        //             alert(data.message);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // } else console.log("didnt pass validation");
+    };
+
 
     return (
         <>
@@ -43,44 +117,44 @@ export default function ProfesorDialog(props) {
                     <div className="md:col-span-1">
                         <div className="px-4 sm:px-0">
                             <h3 className="text-lg font-medium leading-6 text-gray-900">{props.mode == 'add' ? 'ADAUGA CURS' : 'EDITEAZA CURS'}</h3>
-                            <p className="mt-1 text-sm text-gray-600">{props.mode == 'add' ? 'Te rog completeaza formularul cursului.' : 'Editeaza formularul cursuri cu id ='} {id}</p>
+                            <p className="mt-1 text-sm text-gray-600">{props.mode == 'add' ? 'Te rog completeaza formularul cursului.' : 'Editeaza formularul cursului cu id ='} {id}</p>
                         </div>
                     </div>
                     <div className="mt-5 md:col-span-2 md:mt-0">
-                        <form action="#" method="POST">
+                        <form onSubmit={handleSubmit}>
                             <div className="overflow-hidden shadow sm:rounded-md">
                                 <div className="bg-white px-4 py-5 sm:p-6">
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
-                                            <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">Titlu</label>
-                                            <input type="text" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12"
+                                            <label htmlFor="titlu" className="block text-sm font-medium text-gray-700">Titlu</label>
+                                            <input type="text" name="tiltu" id="titlu" required autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12"
                                                 value={title}
                                                 onChange={(event) => setTitle(event.target.value)}
                                             />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
-                                            <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Cod</label>
-                                            <input type="text" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12"
-                                               value={code}
-                                               onChange={(event) => setCode(event.target.value)} />
+                                            <label htmlFor="cod" className="block text-sm font-medium text-gray-700">Cod</label>
+                                            <input type="text" name="cod" id="cod" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" required
+                                                value={code}
+                                                onChange={(event) => setCode(event.target.value)} />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-4">
-                                            <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">Descriere</label>
-                                            <input type="text" name="email-address" id="email-address" autoComplete="email" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" value={description}
+                                            <label htmlFor="descriere" className="block text-sm font-medium text-gray-700">Descriere</label>
+                                            <input type="text" name="descriere" id="descriere" autoComplete="email" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" required value={description}
                                                 onChange={(event) => setDescription(event.target.value)} />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
-                                            <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">Data si ora start</label>
-                                            <input type="datetime-local" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" value={date_start}
+                                            <label htmlFor="date_start" className="block text-sm font-medium text-gray-700">Data si ora start</label>
+                                            <input type="datetime-local" name="date_start" id="date_start" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" required value={date_start}
                                                 onChange={(event) => setDate_start(event.target.value)} />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
-                                            <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Data si ora final</label>
-                                            <input type="datetime-local" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" value={date_final}
+                                            <label htmlFor="date_final" className="block text-sm font-medium text-gray-700">Data si ora final</label>
+                                            <input type="datetime-local" name="date_final" id="date_final" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" required value={date_final}
                                                 onChange={(event) => setDate_final(event.target.value)} />
                                         </div>
                                     </div>
