@@ -21,31 +21,37 @@ function Profesor() {
     var CursuriInfo;
 
     useEffect(() => {
-        function fetchData() {
-            fetch("http://localhost:3000/get-cursuri", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    "idUser": 1
-                }),
-            })
-                .then((response) => {
-                    if (response.status != 200)
-                        return;
-                    return response.json();
-                })
-                .then((data) => {
-                    // console.log(response)
-                    CursuriInfo = data;
-                    console.log(CursuriInfo)
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            // const json = await response.json();
-            // setData(json);
+        async function fetchData() {
+            const response = await fetch("http://localhost:3000/cursuri");
+            if (response.status == 200) {
+                const json = await response.json();
+                CursuriInfo = json.activities;
+            }
+            else {
+                console.log(await response.json())
+            }
+            // fetch("http://localhost:3000/cursuri", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({
+            //         //de inlocuit cu id-ul user-ului logat !
+            //         "idUser": 1
+            //     }),
+            // })
+            //     .then((response) => {
+            //         response.json();
+            //     })
+            //     .then((data) => {
+            //         // console.log(response)
+            //         if (data.activities)
+            //             CursuriInfo = data.activities;
+            //         console.log(CursuriInfo)
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
         }
 
         fetchData();
@@ -77,19 +83,22 @@ function Profesor() {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="py-3 px-6">
-                                Product name
+                                Titlu
                             </th>
                             <th scope="col" className="py-3 px-6">
-                                Color
+                                Descriere
                             </th>
                             <th scope="col" className="py-3 px-6">
-                                Category
+                                Cod
                             </th>
                             <th scope="col" className="py-3 px-6">
-                                Price
+                                Data si ora start
                             </th>
                             <th scope="col" className="py-3 px-6">
-                                Action
+                                Data si ora final
+                            </th>
+                            <th scope="col" className="py-3 px-6">
+                                Actiuni
                             </th>
                         </tr>
                     </thead>
@@ -108,9 +117,39 @@ function Profesor() {
                                 $2999
                             </td>
                             <td className="py-4 px-6">
+                                $2999
+                            </td>
+                            <td className="py-4 px-6">
                                 <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={handleOpenPopupEdit}>Edit</button>
                             </td>
                         </tr>
+                        {CursuriInfo === undefined &&
+                            <>
+                                <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                    <td colSpan={6}>No data found</td>
+                                </tr>
+                            </>
+                        }
+                        {CursuriInfo && CursuriInfo.map((item) => (
+                            // <div key={CursuriInfo.id}>{item.name}</div>
+                            <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {item.title}
+                                </th>
+                                <td className="py-4 px-6">
+                                    {item.description}
+                                </td>
+                                <td className="py-4 px-6">
+                                    {item.code}
+                                </td>
+                                <td className="py-4 px-6">
+                                    {item.date_start}
+                                </td>
+                                <td className="py-4 px-6">
+                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={handleOpenPopupEdit}>Edit</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
