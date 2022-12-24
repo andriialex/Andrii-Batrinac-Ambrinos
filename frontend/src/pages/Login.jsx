@@ -18,7 +18,7 @@ export default function Login() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        alert(data.message)
       })
       .catch((error) => {
         console.log(error);

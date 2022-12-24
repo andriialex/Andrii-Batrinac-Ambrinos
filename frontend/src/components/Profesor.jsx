@@ -19,8 +19,10 @@ function Profesor() {
         setShowPopupEdit(true);
     };
 
-    const handleClosePopup = () => {
+    const handleClosePopupAdd = () => {
         setShowPopup(false);
+    };
+    const handleClosePopupEdit = () => {
         setShowPopupEdit(false);
     };
 
@@ -70,12 +72,12 @@ function Profesor() {
             </nav>
             {showPopup && (
                 <div>
-                    <ProfesorDialog onClose={handleClosePopup} mode={'add'}></ProfesorDialog>
+                    <ProfesorDialog onClose={handleClosePopupAdd} mode={'add'}></ProfesorDialog>
                 </div>
             )}
             {showPopupEdit && (
                 <div>
-                    <ProfesorDialog onClose={handleClosePopup} mode={'edit'} item={JSON.stringify(cursEditat)}></ProfesorDialog>
+                    <ProfesorDialog onClose={handleClosePopupEdit} mode={'edit'} item={JSON.stringify(cursEditat)}></ProfesorDialog>
                 </div>
             )}
 
