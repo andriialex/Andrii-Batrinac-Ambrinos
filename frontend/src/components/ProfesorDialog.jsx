@@ -1,4 +1,36 @@
+import { useEffect } from "react";
+import { useState } from "react"
+
 export default function ProfesorDialog(props) {
+    var curs = {
+        id: "",
+        title: "",
+        description: "",
+        code: "",
+        date_start: "",
+        date_final: ""
+    }
+
+    const [id, setId] = useState('')
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
+    const [code, setCode] = useState('')
+    const [date_start, setDate_start] = useState('')
+    const [date_final, setDate_final] = useState('')
+
+    useEffect(() => {
+        if (props.item) {
+            curs = JSON.parse(props.item);
+            setId(curs.id)
+            setTitle(curs.title)
+            setCode(curs.code)
+            setDescription(curs.description)
+            setDate_start(curs.date_start)
+            setDate_final(curs.date_final)
+        }
+    }, [props.item])
+
+
     return (
         <>
             <div className="hidden sm:block" aria-hidden="true">
@@ -11,7 +43,7 @@ export default function ProfesorDialog(props) {
                     <div className="md:col-span-1">
                         <div className="px-4 sm:px-0">
                             <h3 className="text-lg font-medium leading-6 text-gray-900">{props.mode == 'add' ? 'ADAUGA CURS' : 'EDITEAZA CURS'}</h3>
-                            <p className="mt-1 text-sm text-gray-600">Te rog completeaza formularul cursului.</p>
+                            <p className="mt-1 text-sm text-gray-600">{props.mode == 'add' ? 'Te rog completeaza formularul cursului.' : 'Editeaza formularul cursuri cu id ='} {id}</p>
                         </div>
                     </div>
                     <div className="mt-5 md:col-span-2 md:mt-0">
@@ -21,27 +53,35 @@ export default function ProfesorDialog(props) {
                                     <div className="grid grid-cols-6 gap-6">
                                         <div className="col-span-6 sm:col-span-3">
                                             <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">Titlu</label>
-                                            <input type="text" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" defaultValue={props.mode == 'add' ? 'add' : ''}/>
+                                            <input type="text" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12"
+                                                value={title}
+                                                onChange={(event) => setTitle(event.target.value)}
+                                            />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
                                             <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Cod</label>
-                                            <input type="text" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" />
+                                            <input type="text" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12"
+                                               value={code}
+                                               onChange={(event) => setCode(event.target.value)} />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-4">
                                             <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">Descriere</label>
-                                            <input type="text" name="email-address" id="email-address" autoComplete="email" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" />
+                                            <input type="text" name="email-address" id="email-address" autoComplete="email" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" value={description}
+                                                onChange={(event) => setDescription(event.target.value)} />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
                                             <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">Data si ora start</label>
-                                            <input type="datetime-local" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" />
+                                            <input type="datetime-local" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" value={date_start}
+                                                onChange={(event) => setDate_start(event.target.value)} />
                                         </div>
 
                                         <div className="col-span-6 sm:col-span-3">
                                             <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Data si ora final</label>
-                                            <input type="datetime-local" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" />
+                                            <input type="datetime-local" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12" value={date_final}
+                                                onChange={(event) => setDate_final(event.target.value)} />
                                         </div>
                                     </div>
                                 </div>

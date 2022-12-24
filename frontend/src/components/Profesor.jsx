@@ -4,6 +4,7 @@ import ProfesorDialog from './ProfesorDialog';
 function Profesor() {
     const [showPopup, setShowPopup] = useState(false);
     const [showPopupEdit, setShowPopupEdit] = useState(false);
+    const [cursEditat, setCursEditat] = useState(null);
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -13,7 +14,8 @@ function Profesor() {
         setShowPopup(true);
     };
 
-    const handleOpenPopupEdit = () => {
+    const handleOpenPopupEdit = (event, item) => {
+        setCursEditat(item)
         setShowPopupEdit(true);
     };
 
@@ -58,7 +60,7 @@ function Profesor() {
             )}
             {showPopupEdit && (
                 <div>
-                    <ProfesorDialog onClose={handleClosePopup} mode={'edit'}></ProfesorDialog>
+                    <ProfesorDialog onClose={handleClosePopup} mode={'edit'} item={JSON.stringify(cursEditat)}></ProfesorDialog>
                 </div>
             )}
 
@@ -105,7 +107,7 @@ function Profesor() {
                                     {item.date_final}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={handleOpenPopupEdit}>Edit</button>
+                                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={(event) => handleOpenPopupEdit(event, item)}>Edit</button>
                                 </td>
                             </tr>
                         )) : <>
