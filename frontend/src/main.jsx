@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import ReactPage from "./pages/ReactPage"
+import WatchPage from "./pages/WatchPage";
 
 import { Provider } from 'react-redux'
 import store from './store/store'
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/react/:id",
     element: <ReactPage />,
+  },
+  {
+    path: "/watch/:id",
+    element: <WatchPage />,
   }
 ]);
 

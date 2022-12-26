@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
-function ReactPage() {
+function WatchPage() {
   const { id } = useParams();
 
   const [data, setData] = useState(null);
@@ -22,31 +21,6 @@ function ReactPage() {
       navigate("/login");
     }
     logout();
-  };
-
-  const handleFeedback = (feedbackGiven) => {
-    const body = {
-      idActivity: id,
-      feedback: feedbackGiven
-    }
-    fetch("/api/feedback", {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        toast.success(data.message, {
-          position: "bottom-center",
-          autoClose: 5000,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   useEffect(() => {
@@ -74,7 +48,7 @@ function ReactPage() {
       <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
         <div className="container flex flex-wrap items-center justify-between mx-auto">
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            REACT PAGE
+            WATCH PAGE
           </span>
           <div className="flex md:order-2">
             <a href="/">
@@ -82,7 +56,7 @@ function ReactPage() {
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                STUDENT PAGE
+                PROFESSOR PAGE
               </button>
             </a>
           </div>
@@ -97,43 +71,30 @@ function ReactPage() {
           </div>
         </div>
       </nav>
-   
 
       <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl mx-auto mt-10">
-        <div className="flex flex-col items-center pb-10">
-
+        <div className="flex flex-col items-center py-5">
           {loading && <p>Loading...</p>}
           {error && <div>{error}</div>}
           <h5 className="mb-1 text-xl font-medium text-gray-900 py-5">
-            {curs && curs.title}
+            TITLE: {curs && curs.title}
           </h5>
-          <span className="text-sm text-gray-500">
-            {curs && curs.description}
+          <span className="text-sm text-gray-500 ">
+            description: {curs && curs.description}
           </span>
-          <div className="flex mt-4 space-x-3 md:mt-6">
-            <button
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={(event) => handleFeedback("helpful")}
-            >
-              Helpful
-            </button>
-            <button
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={(event) => handleFeedback("confusing")}
-            >
-              Confusing
-            </button>
-            <button
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={(event) => handleFeedback("boring")}
-            >
-              Boring
-            </button>
-          </div>
+          <span className="text-sm text-gray-500 ">
+            code: {curs && curs.code}
+          </span>
+          <span className="text-sm text-gray-500">
+            date start: {curs && curs.date_start}
+          </span>
+          <span className="text-sm text-gray-500 ">
+            date final: {curs && curs.date_final}
+          </span>
         </div>
       </div>
+      <div>REACTIONS:</div>
     </>
   );
 }
-
-export default ReactPage;
+export default WatchPage;
