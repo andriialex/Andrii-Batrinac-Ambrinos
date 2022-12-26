@@ -8,6 +8,7 @@ import "./index.css";
 import Register from "./pages/Register";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
+import ReactPage from "./pages/ReactPage"
 
 import { Provider } from 'react-redux'
 import store from './store/store'
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/react/:id",
+    element: <ReactPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
