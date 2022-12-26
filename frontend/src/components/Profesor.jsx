@@ -140,7 +140,6 @@ function Profesor() {
                     </tbody>
                 </table>
             </div>
-
         </>
     );
 }
