@@ -1,9 +1,20 @@
 import React, { useState } from "react";
+import useRedirectLoggedIn from "../hooks/useRedirectLoggedIn";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LOGGED_IN } from "../features/auth/authSlice";
+import { USER_DATA } from "../features/auth/authSlice";
+
+import { toast } from "react-toastify";
 
 export default function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
+
+  useRedirectLoggedIn();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -39,10 +50,21 @@ export default function Register() {
       })
         .then((response) => response.json())
         .then((data) => {
-          alert(data.message);
+          toast.success(data.message, {
+            position: "bottom-center",
+            autoClose: 5000,
+          });
+          dispatch(LOGGED_IN(true));
+          dispatch(USER_DATA(data.user));
+          navigate("/");
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(error, {
+            position: "bottom-center",
+            autoClose: 5000,
+          });
+          dispatch(LOGGED_IN(false));
+          dispatch(USER_DATA(null));
         });
     } else console.log("didnt pass validation");
   };

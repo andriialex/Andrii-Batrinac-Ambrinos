@@ -6,15 +6,17 @@ function Student() {
       const [error, setError] = useState(null);
 
       const handleLogout = () => {
-            var result = confirm("Sunteti sigur ca doriti sa va delogati?")
-            if (result == true) {
-                  async function logout() {
-                        var response = await fetch("/api/logout");
-                        const json = await response.json();
-                        alert(json.message)
-                  }
-                  logout()
+            async function logout() {
+                  var response = await fetch("/api/logout");
+                  const json = await response.json();
+                  toast.success(json.message, {
+                        position: "bottom-center",
+                        autoClose: 2000,
+                  });
+                  dispatch(LOGOUT())
+                  navigate("/login");
             }
+            logout()
       }
 
       useEffect(() => {
@@ -46,7 +48,7 @@ function Student() {
                               </div>
                         </div>
                   </nav>
-                 
+
                   <form >
                         <div className="overflow-hidden shadow sm:rounded-md mx-5 mb-5">
                               <div className="bg-white px-4 py-5 sm:p-6">

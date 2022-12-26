@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ProfesorDialog from './ProfesorDialog';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+import { LOGOUT } from '../features/auth/authSlice';
 
 function Profesor() {
     const [showPopup, setShowPopup] = useState(false);
@@ -9,6 +14,9 @@ function Profesor() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleOpenPopupAdd = () => {
         setShowPopup(true);
@@ -27,15 +35,17 @@ function Profesor() {
     };
 
     const handleLogout = () => {
-        var result = confirm("Sunteti sigur ca doriti sa va delogati?")
-        if (result == true) {
-            async function logout() {
-                var response = await fetch("/api/logout");
-                const json = await response.json();
-                alert(json.message)
-            }
-            logout()    
+        async function logout() {
+            var response = await fetch("/api/logout");
+            const json = await response.json();
+            toast.success(json.message, {
+                position: "bottom-center",
+                autoClose: 2000,
+            });
+            dispatch(LOGOUT())
+            navigate("/login");
         }
+        logout()
     }
 
     useEffect(() => {

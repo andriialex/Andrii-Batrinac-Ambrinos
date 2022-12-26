@@ -1,16 +1,20 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Profesor from "../components/Profesor";
 import Student from "../components/Student";
+import { selectUser } from "../features/auth/authSlice";
+import useRedirectLoggedOut from "../hooks/useRedirectLoggedOut";
+import useUserData from "../hooks/useUserData";
 
 const Homepage = () => {
-  const navigate = useNavigate();
+  useRedirectLoggedOut();
+  useUserData();
+
+  const user = useSelector(selectUser);
   return (
     <>
-      <div>
-        <Profesor/>
-        <Student/>
-      </div>
+      {user && user.isProffesor ? <Profesor /> : null}
+      {user && !user.isProffesor ? <Student /> : null}
     </>
   );
 };

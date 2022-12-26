@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LOGGED_IN } from "../features/auth/authSlice";
+import { USER_DATA } from "../features/auth/authSlice";
+import useRedirectLoggedIn from "../hooks/useRedirectLoggedIn";
+import { toast } from "react-toastify";
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useRedirectLoggedIn();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const body = {
@@ -18,10 +28,21 @@ export default function Login() {
     })
       .then((response) => response.json())
       .then((data) => {
-        alert(data.message)
+        toast.success(data.message, {
+          position: "bottom-center",
+          autoClose: 5000,
+        });
+        dispatch(LOGGED_IN(true));
+        dispatch(USER_DATA(data.user));
+        navigate("/");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error, {
+          position: "bottom-center",
+          autoClose: 5000,
+        });
+        dispatch(LOGGED_IN(false));
+        dispatch(USER_DATA(null));
       });
   };
 
