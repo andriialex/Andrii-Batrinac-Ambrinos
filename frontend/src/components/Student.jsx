@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+import { LOGOUT } from '../features/auth/authSlice';
 
 function Student() {
       const [data, setData] = useState(null);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
+
+      const dispatch = useDispatch();
+      const navigate = useNavigate();
 
       const handleLogout = () => {
             async function logout() {
