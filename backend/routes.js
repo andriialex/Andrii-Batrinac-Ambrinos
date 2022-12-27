@@ -3,6 +3,7 @@ import supabase from "./configSupabase.js";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import authorize from "./middleware/authorization.js";
+import crypto from "crypto";
 const router = express.Router();
 
 //Generate jwt token, expires in 1 day
@@ -51,7 +52,36 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message })
   }
+});
 
+//Register student
+router.post("/register-guest", async (req, res) => {
+  try {
+    const random = crypto.randomUUID()
+    const email = 'guest@' + random;
+    const { data, error } = await supabase
+      .from("users")
+      .insert([{ email, password: 'do-not-delete', listActivities: [], isProffesor: false }])
+      .select();
+
+    //Generate token for user id
+    let token = generateAccessToken(data[0].id);
+
+    //Set httpOnly cookie with token
+    res.cookie('token', token, {
+      path: '/',
+      httpOnly: true,
+      expires: new Date(Date.now() + 86400000),
+    });
+
+    if (!data) res.status(400).json({ message: error });
+    else {
+      res.status(200).json({ message: "Logat ca oaspete!", user: data[0], token });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message })
+    console.log(error);
+  }
 });
 
 //Login student and professor

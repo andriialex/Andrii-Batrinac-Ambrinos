@@ -46,6 +46,35 @@ export default function Login() {
       });
   };
 
+  const handleGuest = (event) => {
+    event.preventDefault();
+    fetch("/api/register-guest", {
+      credentials: 'include',
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast.success(data.message, {
+          position: "bottom-center",
+          autoClose: 5000,
+        });
+        dispatch(LOGGED_IN(true));
+        dispatch(USER_DATA(data.user));
+        navigate("/");
+      })
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-center",
+          autoClose: 5000,
+        });
+        dispatch(LOGGED_IN(false));
+        dispatch(USER_DATA(null));
+      });
+  };
+
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -98,6 +127,13 @@ export default function Login() {
                 AUTENTIFICARE
               </button>
             </div>
+            <button
+              type="submit"
+              className="group relative flex w-full justify-center rounded-md border border-indigo-600 bg-white py-2 px-4 text-sm font-medium text-indigo-700 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={handleGuest}
+            >
+              Continua ca oaspete
+            </button>
           </form>
         </div>
       </div>
