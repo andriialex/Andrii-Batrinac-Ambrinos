@@ -15,7 +15,8 @@ const authorize = async (req, res, next) => {
                 .eq("id", user.user);
             if (!users[0]) res.status(400).json({ message: "Id user invalid" });
             else {
-                req.user = users[0];
+                const { name, email, id, isProffesor, listActivities } = users[0];
+                req.user = { name, email, id, isProffesor, listActivities };
                 next();
             }
         });

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOGOUT } from "../features/auth/authSlice";
+import supabase from "../utils/configSupabase"
 
 function WatchPage() {
   const { id } = useParams();
@@ -66,6 +67,16 @@ function WatchPage() {
         console.log(err.message);
       });
   }, []);
+
+  useEffect(() => {
+    supabase
+      .channel('public:feedbacks')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedbacks' }, payload => {
+        setFeedbacks(prev => [...prev, payload.new])
+      })
+      .subscribe()
+  }, []);
+
   return (
     <>
       <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
