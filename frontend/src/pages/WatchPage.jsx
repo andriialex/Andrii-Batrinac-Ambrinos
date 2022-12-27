@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LOGOUT } from "../features/auth/authSlice";
+import { LOGOUT, selectUser } from "../features/auth/authSlice";
 import supabase from "../utils/configSupabase"
+import useRedirectLoggedOut from "../hooks/useRedirectLoggedOut";
+import useUserData from "../hooks/useUserData";
 
 function WatchPage() {
   const { id } = useParams();
@@ -14,6 +16,10 @@ function WatchPage() {
   const [error, setError] = useState(null);
   const [curs, setCurs] = useState(null);
   const [feedbacks, setFeedbacks] = useState(null);
+
+  useRedirectLoggedOut();
+  useUserData();
+  const user = useSelector(selectUser);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,6 +39,7 @@ function WatchPage() {
   };
 
   useEffect(() => {
+    if (!user?.isProffesor) return navigate("/");
     fetch("/api/cursuri")
       .then((data) => {
         if (!data.ok) {

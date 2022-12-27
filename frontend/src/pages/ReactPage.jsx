@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOGOUT } from "../features/auth/authSlice";
+import useRedirectLoggedOut from "../hooks/useRedirectLoggedOut";
+import useUserData from "../hooks/useUserData";
 
 function ReactPage() {
   const { id } = useParams();
@@ -13,6 +15,9 @@ function ReactPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [curs, setCurs] = useState(null);
+
+  useRedirectLoggedOut();
+  useUserData();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
