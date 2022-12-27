@@ -17,6 +17,11 @@ function WatchPage() {
   const [curs, setCurs] = useState(null);
   const [feedbacks, setFeedbacks] = useState(null);
 
+  const [smiley, setSmiley] = useState(0);
+  const [frowny, setFrowny] = useState(0);
+  const [surprised, setSurprised] = useState(0);
+  const [confused, setConfused] = useState(0);
+
   useRedirectLoggedOut();
   useUserData();
   const user = useSelector(selectUser);
@@ -68,17 +73,28 @@ function WatchPage() {
       .then((data) => {
         const feed = data.feedback;
         setFeedbacks(feed);
+        feed.forEach((item) => {
+          if (item.type === "smiley") setSmiley(prev => prev + 1);
+          if (item.type === "frowny") setFrowny(prev => prev + 1);
+          if (item.type === "surprised") setSurprised(prev => prev + 1);
+          if (item.type === "confused") setConfused(prev => prev + 1);
+        })
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
 
+  //Real time feedbacks
   useEffect(() => {
     supabase
       .channel('public:feedbacks')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedbacks' }, payload => {
         setFeedbacks(prev => [...prev, payload.new])
+        if (payload.new.type === "smiley") setSmiley(prev => prev + 1);
+        if (payload.new.type === "frowny") setFrowny(prev => prev + 1);
+        if (payload.new.type === "surprised") setSurprised(prev => prev + 1);
+        if (payload.new.type === "confused") setConfused(prev => prev + 1);
       })
       .subscribe()
   }, []);
@@ -117,7 +133,7 @@ function WatchPage() {
         </div>
       </nav>
 
-      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl mx-auto mt-10">
+      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg mx-auto mt-10">
         <div className="flex flex-col items-center py-5">
           {loading && <p>Loading...</p>}
           {error && <div>{error}</div>}
@@ -136,6 +152,48 @@ function WatchPage() {
           <span className="text-sm text-gray-500 ">
             date final: {curs && curs.date_final}
           </span>
+        </div>
+      </div>
+
+      <div className="bg-white">
+        <div className="mx-auto max-w-lg px-4 sm:px-6 lg:max-w-5xl lg:px-8">
+          <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg mx-auto my-4 py-4">
+            <h1 className="text-center text-xl font-bold">Live Reacts from students</h1>
+          </div>
+
+          <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <a href="#" className="group" onClick={() => { handleFeedback("smiley") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/smiling-face-with-smiling-eyes_1f60a.png" alt="Smiley Face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Smiley Face</p>
+              <p className="text-center">{smiley}</p>
+            </a>
+
+            <a href="#" className="group" onClick={() => { handleFeedback("frowny") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/slightly-frowning-face_1f641.png" alt="Frowny Face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Frowny Face</p>
+              <p className="text-center">{frowny}</p>
+            </a>
+
+            <a href="#" className="group" onClick={() => { handleFeedback("surprised") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/face-with-open-mouth_1f62e.png" alt="Surprised Face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Surprised Face</p>
+              <p className="text-center">{surprised}</p>
+            </a>
+
+            <a href="#" className="group" onClick={() => { handleFeedback("confused") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/confused-face_1f615.png" alt="Confused face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Confused Face</p>
+              <p className="text-center">{confused}</p>
+            </a>
+          </div>
         </div>
       </div>
 
