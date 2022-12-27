@@ -171,13 +171,13 @@ function Profesor() {
               ))
             ) : (
               <>
-                <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                <tr className="bg-white border-b">
                   <td colSpan={6}>No data found</td>
                 </tr>
               </>
             )}
             {loading && (
-              <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+              <tr className="bg-white border-b">
                 <td colSpan={6}>Loading...</td>
               </tr>
             )}

@@ -8,6 +8,7 @@ function WatchPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [curs, setCurs] = useState(null);
+  const [feedbacks, setFeedbacks] = useState(null);
 
   const handleLogout = () => {
     async function logout() {
@@ -41,6 +42,21 @@ function WatchPage() {
       .catch((err) => {
         setError(err.message);
         setLoading(false);
+      });
+
+    fetch(`/api/feedback?idActivity=${encodeURIComponent(id)}`)
+      .then((data) => {
+        if (!data.ok) {
+          throw Error("could not fetch the data");
+        }
+        return data.json();
+      })
+      .then((data) => {
+        const feed = data.feedback;
+        setFeedbacks(feed);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   }, []);
   return (
@@ -93,7 +109,42 @@ function WatchPage() {
           </span>
         </div>
       </div>
-      <div>REACTIONS:</div>
+
+      <div className="overflow-x-auto relative shadow-xl sm:rounded-lg m-2 sm:mx-20 sm:my-10">
+        <table className="w-full text-sm text-left text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+            <tr>
+              <th scope="col" className="py-3 px-6">
+                Ora
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Feedback
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {feedbacks?.length > 0 ? (
+              feedbacks.map((item) => (
+                <tr className="bg-white border-b" key={item.id}>
+                  <td className="py-4 px-6">{item.created_at}</td>
+                  <td className="py-4 px-6">{item.type}</td>
+                </tr>
+              ))
+            ) : (
+              <>
+                <tr className="bg-white border-b">
+                  <td colSpan={6}>No data found</td>
+                </tr>
+              </>
+            )}
+            {loading && (
+              <tr className="bg-white border-b">
+                <td colSpan={6}>Loading...</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

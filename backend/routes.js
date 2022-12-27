@@ -266,7 +266,7 @@ router.post("/feedback", authorize, async (req, res) => {
 
 //Get feedbacks for professors
 router.get("/feedback", authorize, async (req, res) => {
-  const { idActivity } = req.body;
+  const { idActivity } = req.query;
   try {
     const { data } = await supabase
       .from('feedbacks')
