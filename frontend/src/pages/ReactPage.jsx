@@ -118,36 +118,58 @@ function ReactPage() {
       </nav>
 
 
-      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl mx-auto mt-10">
-        <div className="flex flex-col items-center pb-10">
+      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg mx-auto mt-10">
+        <div className="flex flex-col items-center pb-5">
 
-          {loading && <p>Loading...</p>}
+          {loading && <p className="mb-10">Loading...</p>}
           {error && <div>{error}</div>}
-          <h5 className="mb-1 text-xl font-medium text-gray-900 py-5">
+          <p className="text-center text-gray-500">Activity:</p>
+          <h5 className="mb-1 text-xl font-bold text-gray-900">
+
             {curs && curs.title}
           </h5>
-          <span className="text-sm text-gray-500">
+          <p className="text-center text-gray-500">Description:</p>
+          <span className="text-sm">
             {curs && curs.description}
           </span>
-          <div className="flex mt-4 space-x-3 md:mt-6">
-            <button
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={(event) => handleFeedback("helpful")}
-            >
-              Helpful
-            </button>
-            <button
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={(event) => handleFeedback("confusing")}
-            >
-              Confusing
-            </button>
-            <button
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-              onClick={(event) => handleFeedback("boring")}
-            >
-              Boring
-            </button>
+        </div>
+      </div>
+
+      <div className="bg-white">
+        <div className="mx-auto max-w-lg px-4 sm:px-6 lg:max-w-5xl lg:px-8">
+          <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg mx-auto my-4 py-4">
+            <h1 className="text-center text-xl font-bold">Reacts</h1>
+            <p className="text-center text-md">Choose one</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <a href="#" className="group" onClick={() => { handleFeedback("smiley") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/smiling-face-with-smiling-eyes_1f60a.png" alt="Smiley Face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Smiley Face</p>
+            </a>
+
+            <a href="#" className="group" onClick={() => { handleFeedback("frowny") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/slightly-frowning-face_1f641.png" alt="Frowny Face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Frowny Face</p>
+            </a>
+
+            <a href="#" className="group" onClick={() => { handleFeedback("surprised") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/face-with-open-mouth_1f62e.png" alt="Surprised Face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Surprised Face</p>
+            </a>
+
+            <a href="#" className="group" onClick={() => { handleFeedback("confused") }}>
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/confused-face_1f615.png" alt="Confused face" className="h-full w-full object-cover object-center p-10" />
+              </div>
+              <p className="mt-1 text-lg font-medium text-gray-900 text-center pt-2">Confused Face</p>
+            </a>
           </div>
         </div>
       </div>

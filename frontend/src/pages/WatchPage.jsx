@@ -39,7 +39,6 @@ function WatchPage() {
   };
 
   useEffect(() => {
-    if (!user?.isProffesor) return navigate("/");
     fetch("/api/cursuri")
       .then((data) => {
         if (!data.ok) {
@@ -83,6 +82,11 @@ function WatchPage() {
       })
       .subscribe()
   }, []);
+
+  //If user is not a professor, redirect to home page
+  useEffect(() => {
+    if (user && !user.isProffesor) navigate("/");
+  }, [user])
 
   return (
     <>
