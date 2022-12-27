@@ -127,6 +127,7 @@ router.get("/user", authorize, async (req, res) => {
 //Get cursuri for students and professors with authorization middleware
 router.get("/cursuri", authorize, async (req, res) => {
   try {
+    const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
     let { data, error } = await supabase
       .from("users")
       .select("listActivities")
@@ -136,7 +137,8 @@ router.get("/cursuri", authorize, async (req, res) => {
     let { data: activities } = await supabase
       .from("activities")
       .select("*")
-      .in("id", list);
+      .in("id", list)
+
     res.status(200).json(activities);
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message })
@@ -171,7 +173,7 @@ router.patch("/inscriere-curs", authorize, async (req, res) => {
         .select();
 
       if (data) {
-        res.status(200).json({ message: "Inscriere efectuata cu success!", user: data[0] });
+        res.status(200).json({ message: "Inscriere efectuata cu success!", activity: idActivity });
       } else {
         res.status(400).json({ message: "Inscriere esuata!", error: error });
       }
@@ -247,6 +249,17 @@ router.post("/feedback", authorize, async (req, res) => {
   const { idActivity, feedback } = req.body;
   try {
     if (req.user.listActivities.includes(Number(idActivity))) {
+      const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      const { data: activities } = await supabase
+        .from("activities")
+        .select("*")
+        .eq("id", idActivity)
+        .lte("date_start", date)
+        .gte("date_final", date)
+
+      //verifica daca mai poate da feedback la curs pe baza datei
+      if (!activities[0]) return res.status(400).json({ message: "Nu mai poti da feedback la acest curs, a expirat! ", feedback: null });
+
       const { data } = await supabase
         .from('feedbacks')
         .insert([{ idActivity, type: feedback, idUser: req.user.id }])

@@ -58,6 +58,7 @@ function Student() {
             location.reload();
           },
         });
+        navigate(`/react/${data.activity}`);
       })
       .catch((error) => {
         toast.error(error.message, {

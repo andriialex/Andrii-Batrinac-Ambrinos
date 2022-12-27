@@ -46,10 +46,17 @@ function ReactPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        toast.success(data.message, {
-          position: "bottom-center",
-          autoClose: 5000,
-        });
+        if (!data.feedback) {
+          toast.error(data.message, {
+            position: "bottom-center",
+            autoClose: 5000,
+          });
+        } else {
+          toast.success(data.message, {
+            position: "bottom-center",
+            autoClose: 5000,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -104,7 +111,7 @@ function ReactPage() {
           </div>
         </div>
       </nav>
-   
+
 
       <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-xl mx-auto mt-10">
         <div className="flex flex-col items-center pb-10">
