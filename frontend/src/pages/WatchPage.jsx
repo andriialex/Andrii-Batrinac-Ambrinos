@@ -1,6 +1,10 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LOGOUT } from "../features/auth/authSlice";
+
 function WatchPage() {
   const { id } = useParams();
 
@@ -9,6 +13,9 @@ function WatchPage() {
   const [error, setError] = useState(null);
   const [curs, setCurs] = useState(null);
   const [feedbacks, setFeedbacks] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     async function logout() {
