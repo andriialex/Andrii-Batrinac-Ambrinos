@@ -9,8 +9,11 @@ const getUserData = () => {
     useEffect(() => {
         const userData = async () => {
             const user = await infoUser()
-            dispatch(USER_DATA(user))
-            dispatch(LOGGED_IN(true))
+            if (user) {
+                dispatch(USER_DATA(user))
+                dispatch(LOGGED_IN(true))
+                return;
+            }
         };
         userData();
     }, []);

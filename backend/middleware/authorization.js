@@ -6,22 +6,20 @@ import supabase from "../configSupabase.js"
 const authorize = async (req, res, next) => {
     try {
         const token = req.cookies.token;
-        if (!token) return res.status(401).json({ message: "Nu esti autentificat!" });
-        jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
-            if (err) return res.status(401).json({ message: "Nu esti autentificat!" });
-            let { data: users, error } = await supabase
-                .from("users")
-                .select("*")
-                .eq("id", user.user);
-            if (!users[0]) res.status(400).json({ message: "Id user invalid" });
-            else {
-                const { name, email, id, isProffesor, listActivities } = users[0];
-                req.user = { name, email, id, isProffesor, listActivities };
-                next();
-            }
-        });
+        if (!token) {
+            return res.status(401).json({ message: "Nu esti autentificat" })
+        }
+        const { user } = jwt.verify(token, process.env.JWT_SECRET);
+        let { data: users, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", user);
+        const { name, email, id, isProffesor, listActivities, last_feedback } = users[0];
+        req.user = { name, email, id, isProffesor, listActivities, last_feedback };
+
+        next();
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message })
+        res.status(401).json({ message: "Nu esti autentificat!" });
     }
 }
 export default authorize;

@@ -128,20 +128,23 @@ router.get("/logout", async (req, res) => {
 router.get("/login-status", async (req, res) => {
   try {
     const token = req.cookies.token;
-    if (!token) return res.status(200).json(false);
-    jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
-      if (err) return res.status(200).json({ message: "Nu esti logat!" });
-      let { data: users, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", user.user);
-      if (!users[0]) res.status(400).json(false);
-      else {
-        res.status(200).json(true);
+    if (!token) {
+      return res.status(200).json(false);
+    }
+    try {
+      const verified = jwt.verify(token, process.env.JWT_SECRET);
+      if (verified) {
+        return res.status(200).json(true);
+      } else {
+        return res.status(200).json(false);
       }
-    });
+    } catch (error) {
+      return res.status(200).json(false); //Token invalid or expired -> jwt.verify throws error
+    }
+
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message })
+    res.status(500).json({ message: "Server error", error: (process.env.NODE_ENV == 'dev' ? error.message : undefined) });
+    console.log(error);
   }
 });
 
@@ -290,11 +293,20 @@ router.post("/feedback", authorize, async (req, res) => {
       //verifica daca mai poate da feedback la curs pe baza datei
       if (!activities[0]) return res.status(400).json({ message: "Nu mai poti da feedback la acest curs, a expirat! ", feedback: null });
 
+      //verifica daca au trecut 10 seunde de la ultimul feedback
+      const dateFeedback = new Date();
+      const lastFeedback = new Date(req.user.last_feedback);
+      lastFeedback.setSeconds(lastFeedback.getSeconds() + 10);
+      if (dateFeedback < lastFeedback) {
+        return res.status(401).json({ message: "Poti da feedback o data la 10 secunde! ", feedback: null });
+      }
+
       const { data } = await supabase
         .from('feedbacks')
         .insert([{ idActivity, type: feedback, idUser: req.user.id }])
         .select();
       if (data) {
+        await supabase.from('users').update({ last_feedback: dateFeedback }).eq('id', req.user.id);
         res.status(200).json({ message: "Feedback creat cu succes!", feedback: data[0] });
       } else {
         res.status(400).json({ message: "Feedback nu a fost creat!" });
@@ -304,6 +316,7 @@ router.post("/feedback", authorize, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message })
+    console.log(error.message)
   }
 });
 

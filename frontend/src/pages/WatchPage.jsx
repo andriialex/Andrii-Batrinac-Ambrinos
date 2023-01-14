@@ -162,7 +162,7 @@ function WatchPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            <a href="#" className="group" onClick={() => { handleFeedback("smiley") }}>
+            <a href="#" className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
                 <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/smiling-face-with-smiling-eyes_1f60a.png" alt="Smiley Face" className="h-full w-full object-cover object-center p-10" />
               </div>
@@ -170,7 +170,7 @@ function WatchPage() {
               <p className="text-center">{smiley}</p>
             </a>
 
-            <a href="#" className="group" onClick={() => { handleFeedback("frowny") }}>
+            <a href="#" className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
                 <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/slightly-frowning-face_1f641.png" alt="Frowny Face" className="h-full w-full object-cover object-center p-10" />
               </div>
@@ -178,7 +178,7 @@ function WatchPage() {
               <p className="text-center">{frowny}</p>
             </a>
 
-            <a href="#" className="group" onClick={() => { handleFeedback("surprised") }}>
+            <a href="#" className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
                 <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/face-with-open-mouth_1f62e.png" alt="Surprised Face" className="h-full w-full object-cover object-center p-10" />
               </div>
@@ -186,7 +186,7 @@ function WatchPage() {
               <p className="text-center">{surprised}</p>
             </a>
 
-            <a href="#" className="group" onClick={() => { handleFeedback("confused") }}>
+            <a href="#" className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-white xl:aspect-w-7 xl:aspect-h-8 hover:bg-gray-100">
                 <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/facebook/327/confused-face_1f615.png" alt="Confused face" className="h-full w-full object-cover object-center p-10" />
               </div>
