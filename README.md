@@ -1,7 +1,7 @@
 # Andrii-Batrinac-Ambrinos
 Proiect 6 - Aplicație web acordarea de feedback continuu
 
-Platofrma beneficiaza de un sistem de log-in si register pentru studentii noi, in cazul in care un student nu doreste sa isi faca cont acesta poate alege varianta de logare ca oaspete. Cu sesiunea de oaspete un student se paote inregistra la un curs insa acesta poate folosi acea sesiune doar o zi, dupa care trebuie sa isi creeze o noua sesiune.
+Platofrma beneficiaza de un sistem de log-in si register pentru studentii noi, in cazul in care un student nu doreste sa isi faca cont acesta poate alege varianta de logare ca oaspete. Cu sesiunea de oaspete un student se poate inregistra la un curs insa acesta poate folosi acea sesiune doar o zi, dupa care trebuie sa isi creeze o noua sesiune.
 
 Pagina de vizualizare cursuri si inregistrare la cursuri este protejata in cazul in care un student nu este autentificat.
 
@@ -22,4 +22,5 @@ Instructiuni de initializare proiect.
 2. In directorul `frontend` rulați `npm install`
 3. Pentru rulare partea de backend se navigheaza la directorul `backend` si se ruleaza `npm run dev`
 4. Pentru rulare partea de backend se navigheaza la directorul `frontend` si se ruleaza `npm run dev`
+
 Note: Rularea se face in ordinea mentionata, daca se ruleaza frontendul primul nu se face conexiunea cu backend-ul. (Backend-ul trebuie sa fie pe portul 3000, iar frontend-ul pe 3001)

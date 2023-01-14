@@ -252,7 +252,7 @@ router.post("/creare-curs", authorize, async (req, res) => {
 
       res.status(200).json({ message: "Activitatea creata cu succes!", activity: data[0] });
     } else {
-      res.status(400).json({ message: "Userul nu e profesor" });
+      res.status(401).json({ message: "Userul nu e profesor" });
     }
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message })
@@ -263,6 +263,7 @@ router.post("/creare-curs", authorize, async (req, res) => {
 router.patch("/update-curs", authorize, async (req, res) => {
   try {
     const { id_curs, title, description, code, date_start, date_final } = req.body;
+    if (!req.user.isProffesor) return res.status(401).json({ message: "Userul nu e profesor" });
 
     const { data, error } = await supabase
       .from("activities")
