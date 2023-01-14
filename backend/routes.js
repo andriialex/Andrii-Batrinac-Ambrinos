@@ -92,10 +92,10 @@ router.post("/login", async (req, res) => {
       .from("users")
       .select("*")
       .eq("email", email);
-    if (!users[0]) res.status(400).json({ message: "Nu exista email!" });
+    if (!users[0]) res.status(401).json({ message: "Nu exista email!" });
     else {
       const cmp = await bcrypt.compare(pass, users[0].password);
-      if (!cmp) return res.status(400).json({ message: "Parola incorecta!" });
+      if (!cmp) return res.status(401).json({ message: "Parola incorecta!" });
 
       //Generate token for user id
       let token = generateAccessToken(users[0].id);

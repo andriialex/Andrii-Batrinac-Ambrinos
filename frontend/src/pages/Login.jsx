@@ -28,13 +28,20 @@ export default function Login() {
     })
       .then((response) => response.json())
       .then((data) => {
-        toast.success(data.message, {
-          position: "bottom-center",
-          autoClose: 5000,
-        });
-        dispatch(LOGGED_IN(true));
-        dispatch(USER_DATA(data.user));
-        navigate("/");
+        if (data.user) {
+          toast.success(data.message, {
+            position: "bottom-center",
+            autoClose: 5000,
+          });
+          dispatch(LOGGED_IN(true));
+          dispatch(USER_DATA(data.user));
+          navigate("/");
+        } else {
+          toast.error(data.message, {
+            position: "bottom-center",
+            autoClose: 5000,
+          });
+        }
       })
       .catch((error) => {
         toast.error(error, {
